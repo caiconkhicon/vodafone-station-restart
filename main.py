@@ -11,6 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import configparser
+from pythonping import ping
 
 def restart(binary_location,driver_location,password):
     try:
@@ -51,7 +52,13 @@ def main():
     driver_location = config['default']['driver_location']
     password        = config['default']['password']
 
-    restart(binary_location,driver_location,password)
+    try:
+        response_list = ping("8.8.8.8",timeout=10,count=5)
+        if not response_list.success(2):
+            restart(binary_location,driver_location,password)
+
+    except (OSError,RuntimeError) as e:
+        print(format(e))
 
 if __name__ == "__main__":
     main()
