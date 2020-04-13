@@ -14,6 +14,7 @@ import configparser
 from pythonping import ping
 
 def restart(binary_location,driver_location,password):
+    print("Start restarting process")
     try:
         chrome_options = Options()
         chrome_options.add_argument("--no-sandbox")
@@ -35,13 +36,12 @@ def restart(binary_location,driver_location,password):
             driver.find_elements_by_xpath("//input[@type='button' and @value='OK']")[0].click()
         driver.find_elements_by_xpath("//input[@type='button' and @value='No']")[0].click()
         driver.get("https://192.168.0.1/?status_restart&mid=StatusRestart")
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.ID, "PAGE_RESTART_RESTART"))
         )
         driver.find_elements_by_xpath("//input[@type='button' and @id='PAGE_RESTART_RESTART']")[0].click()
-        # driver.find_elements_by_xpath("//input[@type='button' and @id='PAGE_RESTART_POPUP_APPLY']")[0].click()
-
-        time.sleep(3)
+        driver.find_elements_by_xpath("//input[@type='button' and @id='PAGE_RESTART_POPUP_APPLY']")[0].click()
+        print("Restart successfully!")
     finally:
         driver.quit()
 
@@ -53,7 +53,7 @@ def main():
     password        = config['default']['password']
 
     try:
-        response_list = ping("8.8.8.8",timeout=10,count=5)
+        response_list = ping("8.8.8.8",timeout=5,count=5)
         if not response_list.success(2):
             restart(binary_location,driver_location,password)
 
