@@ -9,8 +9,9 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
 import configparser
+import os
+import time
 from pythonping import ping
 
 def restart(binary_location,driver_location,password):
@@ -46,8 +47,9 @@ def restart(binary_location,driver_location,password):
         driver.quit()
 
 def main():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
     config = configparser.ConfigParser()
-    config.read('config.cfg')
+    config.read(dir_path + '/config.cfg')
     binary_location = config['default']['binary_location']
     driver_location = config['default']['driver_location']
     password        = config['default']['password']
