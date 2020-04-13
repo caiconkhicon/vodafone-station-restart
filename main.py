@@ -47,16 +47,15 @@ def restart(binary_location,driver_location,password):
         driver.quit()
 
 def main():
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    config = configparser.ConfigParser()
-    config.read(dir_path + '/config.cfg')
-    binary_location = config['default']['binary_location']
-    driver_location = config['default']['driver_location']
-    password        = config['default']['password']
-
     try:
         response_list = ping("8.8.8.8",timeout=5,count=5)
         if not response_list.success(2):
+            dir_path = os.path.dirname(os.path.realpath(__file__))
+            config = configparser.ConfigParser()
+            config.read(dir_path + '/config.cfg')
+            binary_location = config['default']['binary_location']
+            driver_location = config['default']['driver_location']
+            password        = config['default']['password']
             restart(binary_location,driver_location,password)
         else:
             print("Internet connection is UP. Nothing to do.")
