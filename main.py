@@ -58,7 +58,8 @@ def main():
         response_list = ping("8.8.8.8",timeout=5,count=5)
         if not response_list.success(2):
             restart(binary_location,driver_location,password)
-
+        else:
+            print("Internet connection is UP. Nothing to do.")
     except (OSError,RuntimeError) as e:
         print(format(e))
 
