@@ -33,8 +33,10 @@ def restart(binary_location,driver_location,password):
         if driver.find_element_by_id("InvalidMsg").is_displayed():
             print("Wrong password")
             exit()
-        if len(driver.find_elements_by_xpath("//input[@type='button' and @value='OK']")) != 0:
+        try:
             driver.find_elements_by_xpath("//input[@type='button' and @value='OK']")[0].click()
+        except:
+            pass
         driver.find_elements_by_xpath("//input[@type='button' and @value='No']")[0].click()
         driver.get("https://192.168.0.1/?status_restart&mid=StatusRestart")
         WebDriverWait(driver, 5).until(
