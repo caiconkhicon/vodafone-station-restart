@@ -25,25 +25,25 @@ def restart(binary_location,driver_location,password):
         chrome_options.add_argument("--ignore-certificate-errors")
         chrome_options.binary_location = binary_location
 
-        driver = webdriver.Chrome(driver_location, options=chrome_options)
-        driver.delete_cookie("192.168.0.1")
-        driver.get("https://192.168.0.1")
-        driver.find_element_by_id ("Password").send_keys(password)
-        driver.find_element_by_id("LoginBtn").click()
-        if driver.find_element_by_id("InvalidMsg").is_displayed():
+        driver = webdriver.Chrome(options=chrome_options)
+        driver.delete_cookie("192.168.100.1")
+        driver.get("https://192.168.100.1")
+        driver.find_element(By.ID,"Password").send_keys(password)
+        driver.find_element(By.ID,"LoginBtn").click()
+        if driver.find_element(By.ID,"InvalidMsg").is_displayed():
             print("Wrong password")
             exit()
         try:
-            driver.find_elements_by_xpath("//input[@type='button' and @value='OK']")[0].click()
+            driver.find_element(By.XPATH,"//input[@type='button' and @value='OK']")[0].click()
         except:
             pass
-        driver.find_elements_by_xpath("//input[@type='button' and @value='No']")[0].click()
-        driver.get("https://192.168.0.1/?status_restart&mid=StatusRestart")
+
+        driver.get("https://192.168.100.1/?status_restart&mid=StatusRestart")
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.ID, "PAGE_RESTART_RESTART"))
         )
-        driver.find_elements_by_xpath("//input[@type='button' and @id='PAGE_RESTART_RESTART']")[0].click()
-        driver.find_elements_by_xpath("//input[@type='button' and @id='PAGE_RESTART_POPUP_APPLY']")[0].click()
+        driver.find_element(By.XPATH,"//input[@type='button' and @id='PAGE_RESTART_RESTART']").click()
+        driver.find_element(By.XPATH,"//input[@type='button' and @id='PAGE_RESTART_POPUP_APPLY1']").click()
         print("Restart successfully!")
     finally:
         driver.quit()
